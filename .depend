@@ -1,0 +1,10 @@
+path.cmi:
+sdlparser.cmi: path.cmi
+main.cmo: sdlparser.cmi sdllexer.cmo path.cmi
+main.cmx: sdlparser.cmx sdllexer.cmx path.cmx
+path.cmo: path.cmi
+path.cmx: path.cmi
+sdllexer.cmo: sdlparser.cmi
+sdllexer.cmx: sdlparser.cmx
+sdlparser.cmo: path.cmi sdlparser.cmi
+sdlparser.cmx: path.cmx sdlparser.cmi

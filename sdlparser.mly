@@ -1,16 +1,16 @@
 %{
-  open ast
+  open Path
 %}
 %token <string> IDENT
 %token PRED
 %token PLUS
-%token EOF
+%token EOL
 %start main
-%type <ast.astTerm> main
+%type <Path.pTerm> main
 %%
 main :
    expr EOL    { $1 }
 ;
 
-expr: PRED IDENT                      { Pred $2 }
+expr: PRED IDENT { Pred ($2) }
 ;
