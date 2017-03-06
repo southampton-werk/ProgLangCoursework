@@ -5,11 +5,10 @@
 %token PRED
 %token PLUS
 %token EOF
-%start parser_main             /* the entry point */
-%type <Toy.toyTerm> parser_main
-%type <Toy.toyType> type_spec
+%start main
+%type <ast.astTerm> main
 %%
-program :
+main :
    expr EOL    { $1 }
 ;
 
