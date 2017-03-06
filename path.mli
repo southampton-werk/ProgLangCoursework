@@ -2,4 +2,4 @@
 
 type pTerm = Pred of string ;;
 
-val prettyPrint : pTerm -> unit  
+val prettyPrint : pTerm -> string -> unit  
