@@ -1,5 +1,5 @@
-(* Interface file for Path data type *)
+(* Interface file for Path data type *) 
 
-type pTerm = Pred of string ;;
+type pTerm = Blocked of int | Up of int | Down of int | Right of int | Left of int | Seq of pTerm * pTerm | IF of pTerm * pTerm * pTerm | Pred of string ;;
 
-val prettyPrint : pTerm -> unit
+val prettyPrint : pTerm -> unit  
