@@ -2,8 +2,8 @@
 open parser
 exception Eof
 }
-rule main = parse
-    [' ' '\t' ]  { main lexbuf }
-  | ['\n'] { EOL }
-  | "prefix" { PREFIX }
-  | eof  { raise Eof }
+rule lexer_main = parse
+      [' ' '\t' '\n']     { lexer_main lexbuf }     (* skip blanks *)
+    | "Pred"   { PRED }
+    | ['a'-'z']+ as lxm { IDENT(lxm) }
+    | eof      { EOF }
