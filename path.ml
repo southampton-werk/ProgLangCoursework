@@ -1,5 +1,5 @@
 (* Data type of terms *)
-type pTerm = Pred of string * int | Union of int * int ;;
+type pTerm = Pref of string * int | Union of int * int | Intersection of int * int ;;
 
 module SS = Set.Make(String);;
 
@@ -27,11 +27,11 @@ let stringToLangaugeList input =
       List.map stringToWordList stringList
 ;;
 
-let predWord pre word =
+let prefWord pre word =
   print_string (pre ^ word); print_string "\n"
 ;;
-let predSet pre wordSet =
-  SS.iter (predWord pre) wordSet
+let prefSet pre wordSet =
+  SS.iter (prefWord pre) wordSet
 ;;
 
 let unionLang int1 int2 input =
@@ -40,7 +40,14 @@ let unionLang int1 int2 input =
     print_set (SS.union language1 language2)
 ;;
 
+let intersectionLang int1 int2 input =
+  let language1 = List.nth (stringToLangaugeList input) int1
+  and language2 = List.nth (stringToLangaugeList input) int2 in
+    print_set (SS.inter language1 language2)
+;;
+
 let rec prettyPrint pTerm input = match pTerm with
-| Pred (pre,lang) -> predSet pre (List.nth (stringToLangaugeList input) lang )
+| Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang )
 | Union (lang1,lang2) -> unionLang lang1 lang2 input
+| Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input
 ;;
