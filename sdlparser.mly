@@ -15,5 +15,5 @@ main :
 ;
 expr :
   | PRED IDENT { Pred ($2) }
-  | LANG UNION LANG ( Union ($1, $3))
+  | LANG UNION LANG { Union ($1, $3)}
 ;
