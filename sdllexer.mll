@@ -2,7 +2,7 @@
 open Sdlparser
 exception Eof
 
-  let lang_of_string s = int_of_string (String.sub s 1 1) ;;
+  let second_of_string s = int_of_string (String.sub s 1 ((String.length s) - 1));;
 
 
 }
@@ -13,5 +13,8 @@ rule main = parse
   | ['a'-'z']+ as lxm { IDENT(lxm) }
   | "Union"  { UNION }
   | "Intersection" { INTERSECTION }
-  | 'L'['0'-'9']+ as lxm { LANG(lang_of_string lxm) }
+  | "Join" { JOIN }
+  | '*' { KLEENE }
+  | 'S'['0'-'9']+ as lxm { SIZE(second_of_string lxm) }
+  | 'L'['0'-'9']+ as lxm { LANG(second_of_string lxm) }
   | eof  { raise Eof }
