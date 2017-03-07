@@ -23,6 +23,6 @@ let predSet pre wordSet =
 ;;
 
 let rec prettyPrint pTerm input = match pTerm with
-  Pred (n) -> predSet n (stringToWordList input)
-| Union (a,b) -> print_int a ; print_int b;
+| Pred (pre) -> predSet pre (List.nth (stringToLangaugeList input) 0 ) 
+| Union (lang1,lang2) -> print_int lang1 ; print_int lang2;
 ;;
