@@ -18,6 +18,8 @@ OBJS =   sdlparser.cmo sdllexer.cmo path.cmo main.cmo
 # Files that need to be generated from other files
 DEPEND += sdllexer.ml sdlparser.ml 
 
+COMMONOBJS = str.cma
+
 # When "make" is invoked with no arguments, we build an executable 
 # typechecker, after building everything that it depends on
 all: $(DEPEND) $(OBJS) sdlc
