@@ -4,16 +4,21 @@ type pTerm = Pref of string * int | Union of int * int | Intersection of int * i
 module SS = Set.Make(String);;
 
 
-let rec print_elements e = match e with
+let rec aux_print_elements e =
+    match e with
     | [] -> print_string ""
     | [x] -> print_string x
-    | x::t -> print_string (x ^ ","); print_elements t;;
+    | x::t -> print_string (x ^ ","); aux_print_elements t
+;;
+
+let print_elements e =
+  print_string "{";
+  aux_print_elements e;
+  print_string "}"
+;;
 
 let print_set s =
-  print_string "{";
   print_elements (SS.elements s);
-  print_string "}"
-
 ;;
 
 
@@ -28,10 +33,11 @@ let stringToLangaugeList input =
 ;;
 
 let prefWord pre word =
-  print_string (pre ^ word); print_string "\n"
+  (pre ^ word)
 ;;
 let prefSet pre wordSet =
-  SS.iter (prefWord pre) wordSet
+  let prefList = SS.elements wordSet in
+    print_elements (List.map (prefWord pre) prefList)
 ;;
 
 let unionLang int1 int2 input =
