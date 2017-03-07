@@ -3,6 +3,8 @@
 %}
 
 %token <string> IDENT
+%token <int> LANG
+%token UNION
 %token PRED
 %token EOL
 %start main
@@ -13,4 +15,5 @@ main :
 ;
 expr :
   | PRED IDENT { Pred ($2) }
+  | LANG UNION LANG ( Union ($1, $3))
 ;

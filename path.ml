@@ -1,5 +1,5 @@
 (* Data type of terms *)
-type pTerm = Pred of string  ;;
+type pTerm = Pred of string | Union of int * int ;;
 
 module SS = Set.Make(String);;
 let print_set s =
@@ -24,4 +24,5 @@ let predSet pre wordSet =
 
 let rec prettyPrint pTerm input = match pTerm with
   Pred (n) -> predSet n (stringToWordList input)
+| Union (a,b) -> print_int a ; print_int b;
 ;;
