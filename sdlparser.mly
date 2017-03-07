@@ -14,6 +14,6 @@ main :
    expr EOL    { $1 }
 ;
 expr :
-  | PRED IDENT LANG { Pred ($2) }
+  | PRED IDENT LANG { Pred ($2, $3) }
   | LANG UNION LANG { Union ($1, $3)}
 ;

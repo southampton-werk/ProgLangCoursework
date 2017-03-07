@@ -1,9 +1,21 @@
 (* Data type of terms *)
-type pTerm = Pred of string | Union of int * int ;;
+type pTerm = Pred of string * int | Union of int * int ;;
 
 module SS = Set.Make(String);;
+
+
+let rec print_elements e = match e with
+    | [] -> print_string ""
+    | [x] -> print_string x
+    | x::t -> print_string (x ^ ","); print_elements t;;
+
 let print_set s =
-     SS.iter print_endline s;;
+  print_string "{";
+  print_elements (SS.elements s);
+  print_string "}"
+
+;;
+
 
 let stringToWordList input =
   let bracketsFiltered = String.sub input 1 ((String.length input) - 2) in
@@ -22,7 +34,13 @@ let predSet pre wordSet =
   SS.iter (predWord pre) wordSet
 ;;
 
+let unionLang int1 int2 input =
+  let language1 = List.nth (stringToLangaugeList input) int1
+  and language2 = List.nth (stringToLangaugeList input) int2 in
+    print_set (SS.union language1 language2)
+;;
+
 let rec prettyPrint pTerm input = match pTerm with
-| Pred (pre) -> predSet pre (List.nth (stringToLangaugeList input) 0 ) 
-| Union (lang1,lang2) -> print_int lang1 ; print_int lang2;
+| Pred (pre,lang) -> predSet pre (List.nth (stringToLangaugeList input) lang )
+| Union (lang1,lang2) -> unionLang lang1 lang2 input
 ;;
