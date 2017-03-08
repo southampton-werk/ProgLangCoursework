@@ -21,7 +21,7 @@ expr :
   | PREF word LANG { Pref ($2, $3) }
   | LANG UNION LANG { Union ($1, $3)}
   | LANG INTERSECTION LANG { Intersection ($1, $3)}
-  | LANG JOIN IDENT { Join ($1, $3 ) }
+  | LANG JOIN word { Join ($1, $3 ) }
 ;
 word :
   | IDENT { Ident ($1) }

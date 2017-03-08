@@ -1,6 +1,6 @@
 (* Data type of terms *)
 type word = Ident of string | Kleen of string  ;;
-type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * string  ;;
+type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * word  ;;
 module SS = Set.Make(String);;
 
 
