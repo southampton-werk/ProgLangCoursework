@@ -1,7 +1,7 @@
 (* Interface file for Path data type *)
 
-type word = Ident of string | Kleen of word  ;;
+type word = Ident of string | Kleen of string  ;;
 
-type pTerm = Pref of string * int | Union of int * int | Intersection of int * int | Join of int * word ;;
+type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * string ;;
 
 val prettyPrint : pTerm -> string -> unit

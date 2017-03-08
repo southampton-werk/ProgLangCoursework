@@ -14,7 +14,7 @@ rule main = parse
   | "Union"  { UNION }
   | "Intersection" { INTERSECTION }
   | "Join" { JOIN }
-  | '*' { KLEENE }
+  | ['a'-'z']+'*' as lxm { KLEENE(String.sub lxm 0 ((String.length lxm) - 1)) }
   | 'S'['0'-'9']+ as lxm { SIZE(second_of_string lxm) }
   | 'L'['0'-'9']+ as lxm { LANG(second_of_string lxm) }
   | eof  { raise Eof }
