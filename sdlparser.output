@@ -1,0 +1,149 @@
+   0  $accept : %entry% $end
+
+   1  main : expr EOL
+
+   2  expr : PREF word LANG
+   3       | LANG UNION LANG
+   4       | LANG INTERSECTION LANG
+   5       | LANG JOIN word
+
+   6  word : IDENT
+   7       | KLEENE
+
+   8  %entry% : '\001' main
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	.  error
+
+	%entry%  goto 2
+
+
+state 1
+	%entry% : '\001' . main  (8)
+
+	LANG  shift 3
+	PREF  shift 4
+	.  error
+
+	main  goto 5
+	expr  goto 6
+
+
+state 2
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 3
+	expr : LANG . UNION LANG  (3)
+	expr : LANG . INTERSECTION LANG  (4)
+	expr : LANG . JOIN word  (5)
+
+	UNION  shift 7
+	JOIN  shift 8
+	INTERSECTION  shift 9
+	.  error
+
+
+state 4
+	expr : PREF . word LANG  (2)
+
+	IDENT  shift 10
+	KLEENE  shift 11
+	.  error
+
+	word  goto 12
+
+
+state 5
+	%entry% : '\001' main .  (8)
+
+	.  reduce 8
+
+
+state 6
+	main : expr . EOL  (1)
+
+	EOL  shift 13
+	.  error
+
+
+state 7
+	expr : LANG UNION . LANG  (3)
+
+	LANG  shift 14
+	.  error
+
+
+state 8
+	expr : LANG JOIN . word  (5)
+
+	IDENT  shift 10
+	KLEENE  shift 11
+	.  error
+
+	word  goto 15
+
+
+state 9
+	expr : LANG INTERSECTION . LANG  (4)
+
+	LANG  shift 16
+	.  error
+
+
+state 10
+	word : IDENT .  (6)
+
+	.  reduce 6
+
+
+state 11
+	word : KLEENE .  (7)
+
+	.  reduce 7
+
+
+state 12
+	expr : PREF word . LANG  (2)
+
+	LANG  shift 17
+	.  error
+
+
+state 13
+	main : expr EOL .  (1)
+
+	.  reduce 1
+
+
+state 14
+	expr : LANG UNION LANG .  (3)
+
+	.  reduce 3
+
+
+state 15
+	expr : LANG JOIN word .  (5)
+
+	.  reduce 5
+
+
+state 16
+	expr : LANG INTERSECTION LANG .  (4)
+
+	.  reduce 4
+
+
+state 17
+	expr : PREF word LANG .  (2)
+
+	.  reduce 2
+
+
+12 terminals, 5 nonterminals
+9 grammar rules, 18 states

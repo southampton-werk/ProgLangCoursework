@@ -58,6 +58,26 @@ let prefSet pre wordSet k =
     |Kleen (s) -> print_elements (prefKleeneWord s (List.nth prefList 0) 0 k)
 ;;
 
+let joinSimpleWord suff word =
+  (word ^ suff)
+;;
+
+let joinKleeneWord suff word i k =
+  let rec aux acc i =
+    if i <= k then
+      aux ((word ^ (stringRepeat suff i)) ::acc) (i+1)
+    else (List.rev acc)
+  in
+  aux [] i
+;;
+
+let joinSet pre wordSet k =
+  let joinList = SS.elements wordSet in
+    match pre with
+    |Ident (s) -> print_elements (List.map (joinSimpleWord s) joinList)
+    |Kleen (s) -> print_elements (joinKleeneWord s (List.nth joinList 0) 0 k)
+;;
+
 let unionLang int1 int2 input =
   let language1 = List.nth (stringToLangaugeList input) int1
   and language2 = List.nth (stringToLangaugeList input) int2 in
@@ -74,5 +94,5 @@ let rec prettyPrint pTerm input = match pTerm with
 | Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang) 5
 | Union (lang1,lang2) -> unionLang lang1 lang2 input
 | Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input
-| Join (lang,word) -> print_string "join"
+| Join (lang,word) ->  joinSet word (List.nth (stringToLangaugeList input) lang) 5
 ;;
