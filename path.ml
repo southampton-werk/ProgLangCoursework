@@ -1,6 +1,6 @@
 (* Data type of terms *)
 type word = Ident of string | Kleen of string  ;;
-type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * word  ;;
+type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * word  | Newexpr of pTerm * pTerm;;
 module SS = Set.Make(String);;
 
 
@@ -95,4 +95,5 @@ let rec prettyPrint pTerm input = match pTerm with
 | Union (lang1,lang2) -> unionLang lang1 lang2 input
 | Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input
 | Join (lang,word) ->  joinSet word (List.nth (stringToLangaugeList input) lang) 5
+| Newexpr (pterm1,pterm2) -> prettyPrint pterm1 input; print_string "\n"; prettyPrint pterm2 input
 ;;
