@@ -7,6 +7,7 @@
 %token UNION
 %token <int> SIZE
 %token <string> KLEENE
+%token SEP
 %token JOIN
 %token LEFTCURLY
 %token RIGHTCURLY
@@ -33,5 +34,10 @@ word :
 ;
 language :
   | KLEENE  { Kleen ($1) }
-  | LEFTCURLY IDENT RIGHTCURLY { Language ($2) }
+  | SIZE OVER LEFTCURLY inLanguage RIGHTCURLY { Language ($1, $4) }
+;
+inLanguage :
+  | word { Singleton($1) }
+  | inLanguage SEP word { Singleton($3) }
+;
 ;;

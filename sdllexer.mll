@@ -15,6 +15,7 @@ rule main = parse
   | "Intersection" { INTERSECTION }
   | "Join" { JOIN }
   | "Over" { OVER }
+  | ',' { SEP }
   | '{' { LEFTCURLY }
   | '{' { RIGHTCURLY }
   | ';' { NEWEXPR }
