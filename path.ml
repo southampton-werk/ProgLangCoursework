@@ -1,6 +1,7 @@
 (* Data type of terms *)
-type word = Ident of string | Kleen of string  ;;
-type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * word  | Newexpr of pTerm * pTerm;;
+type word = Ident of string ;;
+type language = Language of string | Kleen of string ;;
+type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * language  | Newexpr of pTerm * pTerm ;;
 module SS = Set.Make(String);;
 
 
@@ -55,7 +56,6 @@ let prefSet pre wordSet k =
   let prefList = SS.elements wordSet in
     match pre with
     |Ident (s) -> print_elements (List.map (prefSimpleWord s) prefList)
-    |Kleen (s) -> print_elements (prefKleeneWord s (List.nth prefList 0) 0 k)
 ;;
 
 let joinSimpleWord suff word =
@@ -74,7 +74,6 @@ let joinKleeneWord suff word i k =
 let joinSet pre wordSet k =
   let joinList = SS.elements wordSet in
     match pre with
-    |Ident (s) -> print_elements (List.map (joinSimpleWord s) joinList)
     |Kleen (s) -> print_elements (joinKleeneWord s (List.nth joinList 0) 0 k)
 ;;
 
