@@ -7,21 +7,26 @@ type pTerm = Pref of word * int | Union of int * int | Intersection of int * int
 module SS = Set.Make(String);;
 
 
-let rec aux_print_elements e =
-    match e with
+let rec aux_print_elements e count k =
+    if (count < k - 1 )
+    then match e with
     | [] -> print_string ""
     | [x] -> print_string x
-    | x::t -> print_string (x ^ ", "); aux_print_elements t
+    | x::t -> print_string (x ^ ", "); aux_print_elements t (count + 1) k
+    else match e with
+    | [] -> print_string ""
+    | [x] -> print_string x
+    | x::t -> print_string x
 ;;
 
-let print_elements e =
+let print_elements e k =
   print_string "{";
-  aux_print_elements e;
+  aux_print_elements e 0 k;
   print_string "}"
 ;;
 
-let print_set s =
-  print_elements (SS.elements s);
+let print_set s k =
+  print_elements (SS.elements s) k;
 ;;
 
 
@@ -58,7 +63,7 @@ let prefKleeneWord pre word i k =
 let prefSet pre wordSet k =
   let prefList = SS.elements wordSet in
     match pre with
-    |Ident (s) -> print_elements (List.map (prefSimpleWord s) prefList)
+    |Ident (s) -> print_elements (List.map (prefSimpleWord s) prefList) k
 ;;
 
 let joinSimpleWord suff word =
@@ -77,26 +82,26 @@ let joinKleeneWord suff word i k =
 let joinSet suff wordSet k =
   let joinList = SS.elements wordSet in
     match suff with
-    |Kleen (s) -> print_elements (joinKleeneWord s (List.nth joinList 0) 0 k)
+    |Kleen (s) -> print_elements (joinKleeneWord s (List.nth joinList 0) 0 k) k
 
 ;;
 
-let unionLang int1 int2 input =
+let unionLang int1 int2 input k =
   let language1 = List.nth (stringToLangaugeList input) int1
   and language2 = List.nth (stringToLangaugeList input) int2 in
-    print_set (SS.union language1 language2)
+    print_set (SS.union language1 language2) k
 ;;
 
-let intersectionLang int1 int2 input =
+let intersectionLang int1 int2 input k =
   let language1 = List.nth (stringToLangaugeList input) int1
   and language2 = List.nth (stringToLangaugeList input) int2 in
-    print_set (SS.inter language1 language2)
+    print_set (SS.inter language1 language2) k
 ;;
 
 let rec prettyPrint pTerm input k = match pTerm with
-| Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang) 5
-| Union (lang1,lang2) -> unionLang lang1 lang2 input
-| Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input
-| Join (lang,word) ->  joinSet word (List.nth (stringToLangaugeList input) lang) 5
+| Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang) k
+| Union (lang1,lang2) -> unionLang lang1 lang2 input k
+| Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input k
+| Join (lang,word) ->  joinSet word (List.nth (stringToLangaugeList input) lang) k
 | Newexpr (pterm1,pterm2) -> prettyPrint pterm1 input k; print_string "\n"; prettyPrint pterm2 input k
 ;;
