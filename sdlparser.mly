@@ -34,7 +34,7 @@ word :
 ;
 language :
   | KLEENE  { Kleen ($1) }
-  | SIZE OVER LEFTCURLY inLanguage RIGHTCURLY { Language ($1, $4) }
+  | SIZE OVER LEFTCURLY inLanguage RIGHTCURLY { LanguageOver ($1, $4) }
 ;
 inLanguage :
   | word { Singleton($1) }
