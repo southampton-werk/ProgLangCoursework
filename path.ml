@@ -11,7 +11,7 @@ let rec aux_print_elements e =
     match e with
     | [] -> print_string ""
     | [x] -> print_string x
-    | x::t -> print_string (x ^ ","); aux_print_elements t
+    | x::t -> print_string (x ^ ", "); aux_print_elements t
 ;;
 
 let print_elements e =
@@ -28,8 +28,9 @@ let print_set s =
 
 let stringToWordList input =
   let bracketsFiltered = String.sub input 1 ((String.length input) - 2) in
-    let listFiltered = Str.split (Str.regexp ",") bracketsFiltered in
-      SS.of_list listFiltered
+      let spacesRemoved = Str.global_replace (Str.regexp " ") "" bracketsFiltered in
+          let listFiltered = Str.split (Str.regexp ",") spacesRemoved in
+              SS.of_list listFiltered
 ;;
 let stringToLangaugeList input =
     let stringList = Str.split (Str.regexp "\n") input in
@@ -92,10 +93,10 @@ let intersectionLang int1 int2 input =
     print_set (SS.inter language1 language2)
 ;;
 
-let rec prettyPrint pTerm input = match pTerm with
+let rec prettyPrint pTerm input k = match pTerm with
 | Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang) 5
 | Union (lang1,lang2) -> unionLang lang1 lang2 input
 | Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input
 | Join (lang,word) ->  joinSet word (List.nth (stringToLangaugeList input) lang) 5
-| Newexpr (pterm1,pterm2) -> prettyPrint pterm1 input; print_string "\n"; prettyPrint pterm2 input
+| Newexpr (pterm1,pterm2) -> prettyPrint pterm1 input k; print_string "\n"; prettyPrint pterm2 input k
 ;;

@@ -1,13 +1,13 @@
-# 
+#
 # Rules for compiling and linking the typechecker/evaluator
 #
 # Type
-#   make         to rebuild the executable file sdlc
+#   make         to rebuild the executable file mysplinterpreter
 #   make clean   to remove all intermediate and temporary files
 #   make depend  to rebuild the intermodule dependency graph that is used
-#                  by make to determine which order to schedule 
+#                  by make to determine which order to schedule
 #	           compilations.  You should not need to do this unless
-#                  you add new modules or new dependencies between 
+#                  you add new modules or new dependencies between
 #                  existing modules.  (The graph is stored in the file
 #                  .depend)
 
@@ -16,21 +16,21 @@
 OBJS =   sdlparser.cmo sdllexer.cmo path.cmo main.cmo
 
 # Files that need to be generated from other files
-DEPEND += sdllexer.ml sdlparser.ml 
+DEPEND += sdllexer.ml sdlparser.ml
 
 COMMONOBJS = str.cma
 
-# When "make" is invoked with no arguments, we build an executable 
+# When "make" is invoked with no arguments, we build an executable
 # typechecker, after building everything that it depends on
-all: $(DEPEND) $(OBJS) sdlc
+all: $(DEPEND) $(OBJS) mysplinterpreter
 
 # Include an automatically generated list of dependencies between source files
 include .depend
 
 # Build an executable typechecker
-sdlc: $(OBJS) main.cmo 
+mysplinterpreter: $(OBJS) main.cmo
 	@echo Linking $@
-	ocamlc -o $@ $(COMMONOBJS) $(OBJS) 
+	ocamlc -o $@ $(COMMONOBJS) $(OBJS)
 
 # Compile an ML module interface
 %.cmi : %.mli
@@ -55,10 +55,10 @@ sdlparser.ml sdlparser.mli: sdlparser.mly
 # Clean up the directory
 clean::
 	rm -rf sdllexer.ml sdlparser.ml sdlparser.mli *.o *.cmo *.cmi sdlparser.output \
-	   sdlc TAGS *~ 
+	   mysplinterpreter TAGS *~
 
 # Rebuild intermodule dependencies
-depend:: $(DEPEND) 
+depend:: $(DEPEND)
 	ocamldep $(INCLUDE) *.mli *.ml > .depend
 
-# 
+#
