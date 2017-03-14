@@ -79,11 +79,14 @@ let joinKleeneWord suff word i k =
   aux [] i
 ;;
 
+let languageOver wordSet size words =
+  5
+;;
 let joinSet suff wordSet k =
   let joinList = SS.elements wordSet in
     match suff with
     |Kleen (s) -> print_elements (joinKleeneWord s (List.nth joinList 0) 0 k) k
-
+    |LanguageOver (size,words) -> print_string "hey"
 ;;
 
 let unionLang int1 int2 input k =
