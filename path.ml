@@ -1,7 +1,7 @@
 (* Data type of terms *)
 
 type word = Ident of string ;;
-type inlanguage = Singleton of word ;;
+type inlanguage = Singleton of word | Multiple of inlanguage * word;;
 type language = LanguageOver of int * inlanguage | Kleen of string ;;
 type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * language  | Newexpr of pTerm * pTerm ;;
 module SS = Set.Make(String);;
@@ -79,14 +79,24 @@ let joinKleeneWord suff word i k =
   aux [] i
 ;;
 
+let inputLanguageSingleton element =
+  match element with
+  |Ident (s) -> SS.singleton s
+;;
+let rec inputLanguage inlanguage =
+  match inlanguage with
+  |Singleton (s) -> inputLanguageSingleton s
+  |Multiple (set,s) -> SS.union (inputLanguage set) (inputLanguageSingleton s)
+;;
+
 let languageOver wordSet size words =
-  5
+  print_set (inputLanguage words) 5
 ;;
 let joinSet suff wordSet k =
   let joinList = SS.elements wordSet in
     match suff with
     |Kleen (s) -> print_elements (joinKleeneWord s (List.nth joinList 0) 0 k) k
-    |LanguageOver (size,words) -> print_string "hey"
+    |LanguageOver (size,words) -> languageOver wordSet size words
 ;;
 
 let unionLang int1 int2 input k =

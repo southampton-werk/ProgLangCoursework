@@ -38,6 +38,6 @@ language :
 ;
 inLanguage :
   | word { Singleton($1) }
-  | inLanguage SEP word { Singleton($3) }
+  | inLanguage SEP word { Multiple ($1,$3) }
 ;
 ;;
