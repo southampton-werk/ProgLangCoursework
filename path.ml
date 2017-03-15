@@ -25,11 +25,17 @@ let print_elements e k =
   print_string "}"
 ;;
 
-let print_set s k =
-  print_elements (SS.elements s) k;
+let rec aux_create_input_string e = match e with
+    | [] -> ""
+    | [x] -> x
+    | x::t ->  (x ^ ", ") ^ (aux_create_input_string t)
 ;;
 
-
+let create_input_string e =
+  let output = "{" in
+  let output = output ^ (aux_create_input_string e) in
+  output ^ "}"
+;;
 
 let stringToWordList input =
   let bracketsFiltered = String.sub input 1 ((String.length input) - 2) in
@@ -60,10 +66,10 @@ let prefKleeneWord pre word i k =
 ;;
 
 
-let prefSet pre wordSet k =
+let prefSet pre wordSet =
   let prefList = SS.elements wordSet in
     match pre with
-    |Ident (s) -> print_elements (List.map (prefSimpleWord s) prefList) k
+    |Ident (s) -> List.map (prefSimpleWord s) prefList
 ;;
 
 let joinSimpleWord suff word =
@@ -94,31 +100,38 @@ let sizeSet size set =
 
 let languageOver wordSet size words  =
   let suffSet = inputLanguage words in
-    suffSet
+    SS.elements suffSet
 ;;
 let joinSet suff wordSet k =
   let joinList = SS.elements wordSet in
     match suff with
-    |Kleen (s) -> print_elements (joinKleeneWord s (List.nth joinList 0) 0 k) k
-    |LanguageOver (size,words) -> print_set (languageOver wordSet size words) k
+    |Kleen (s) ->  joinKleeneWord s (List.nth joinList 0) 0 k
+    |LanguageOver (size,words) -> languageOver wordSet size words
 ;;
 
-let unionLang int1 int2 input k =
+let unionLang int1 int2 input =
   let language1 = List.nth (stringToLangaugeList input) int1
   and language2 = List.nth (stringToLangaugeList input) int2 in
-    print_set (SS.union language1 language2) k
+    SS.elements (SS.union language1 language2)
 ;;
 
-let intersectionLang int1 int2 input k =
+let intersectionLang int1 int2 input =
   let language1 = List.nth (stringToLangaugeList input) int1
   and language2 = List.nth (stringToLangaugeList input) int2 in
-    print_set (SS.inter language1 language2) k
+    SS.elements (SS.inter language1 language2)
 ;;
 
+let rec workOut pTerm input k = match pTerm with
+| Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang)
+| Union (lang1,lang2) -> unionLang lang1 lang2 input
+| Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input
+| Join (lang,word) -> joinSet word (List.nth (stringToLangaugeList input) lang) k
+;;
 let rec prettyPrint pTerm input k = match pTerm with
-| Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang) k
-| Union (lang1,lang2) -> unionLang lang1 lang2 input k
-| Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input k
-| Join (lang,word) ->  joinSet word (List.nth (stringToLangaugeList input) lang) k
+| Pref (pre,lang) -> print_elements (workOut pTerm input k) k
+| Union (lang1,lang2) -> print_elements (workOut pTerm input k) k
+| Intersection (lang1,lang2) -> print_elements (workOut pTerm input k) k
+| Join (lang,word) ->  print_elements (workOut pTerm input k) k
 | Newexpr (pterm1,pterm2) -> prettyPrint pterm1 input k; print_string "\n"; prettyPrint pterm2 input k
+| In (pterm1,pterm2) -> print_elements (workOut pterm2 (create_input_string (workOut pterm1 input k)) k) k
 ;;
