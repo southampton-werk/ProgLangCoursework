@@ -10,6 +10,7 @@
 %token SEP
 %token JOIN
 %token LEFTCURLY
+%token IN
 %token RIGHTCURLY
 %token PREF
 %token OVER
@@ -28,6 +29,7 @@ expr :
   | LANG INTERSECTION LANG { Intersection ($1, $3)}
   | expr NEWEXPR expr { Newexpr($1, $3 ) }
   | LANG JOIN language { Join ($1, $3 )}
+  | expr IN expr { In ($1, $3 )}
 ;
 word :
   | IDENT { Ident ($1) }
