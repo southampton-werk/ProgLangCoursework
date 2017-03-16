@@ -1,2 +1,2 @@
 # ProgLangCoursework
-joinAllElement ["a";"b;"c"] ["d";"b";"e"]
+List.flatten (joinAllElement ["a";"b"] ["d";"b";"e"]) ;;

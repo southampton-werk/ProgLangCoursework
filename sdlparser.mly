@@ -31,9 +31,9 @@ expr :
 
 set :
   | PREF word LANG { Pref ($2, $3) }
-  | LANG UNION LANG { Union ($1, $3)}
-  | LANG INTERSECTION LANG { Intersection ($1, $3)}
-  | LANG JOIN language { Join ($1, $3 )}
+  | UNION LANG LANG { Union ($2, $3)}
+  | INTERSECTION LANG LANG { Intersection ($2, $3)}
+  | JOIN LANG language { Join ($2, $3 )}
 ;
 
 word :
