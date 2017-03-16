@@ -95,19 +95,32 @@ let rec inputLanguage inlanguage =
   |Singleton (s) -> inputLanguageSingleton s
   |Multiple (set,s) -> SS.union (inputLanguage set) (inputLanguageSingleton s)
 ;;
-let sizeSet size set =
-  SS.singleton "test"
+
+let joinEachElement currentSet a =
+  List.map (joinSimpleWord a) currentSet
 ;;
 
-let languageOver wordSet size words  =
-  let suffSet = inputLanguage words in
-    SS.elements suffSet
+let joinAllElement originalSet currentSet =
+  List.flatten (List.map (joinEachElement originalSet) currentSet)
+;;
+
+
+let rec sizeSet size targetSize originalSet currentSet  =
+  if size = targetSize
+  then currentSet
+  else sizeSet (size + 1) targetSize originalSet (joinAllElement originalSet currentSet)
+;;
+
+let languageOver joinList size words  =
+  let suffSet = SS.elements (inputLanguage words) in
+    let sizedSet = sizeSet 1 size suffSet suffSet in
+      joinAllElement joinList sizedSet
 ;;
 let joinSet suff wordSet k =
   let joinList = SS.elements wordSet in
     match suff with
     |Kleen (s) ->  joinKleeneWord s (List.nth joinList 0) 0 k
-    |LanguageOver (size,words) -> languageOver wordSet size words
+    |LanguageOver (size,words) -> languageOver joinList size words
 ;;
 
 let unionLang int1 int2 input =

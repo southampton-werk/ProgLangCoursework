@@ -1,2 +1,2 @@
 # ProgLangCoursework
-print_elements (languageOver wordSet size words) k
+joinAllElement ["a";"b;"c"] ["d";"b";"e"]
