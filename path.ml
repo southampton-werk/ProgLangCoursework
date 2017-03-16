@@ -113,7 +113,7 @@ let rec sizeSet size targetSize originalSet currentSet  =
 
 let languageOver joinList size words  =
   let suffSet = SS.elements (inputLanguage words) in
-    let sizedSet = sizeSet 1 size suffSet suffSet in
+    let sizedSet = SS.elements (SS.of_list (sizeSet 1 size suffSet suffSet)) in
       joinAllElement joinList sizedSet
 ;;
 let joinSet suff wordSet k =
