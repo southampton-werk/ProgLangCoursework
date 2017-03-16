@@ -3,7 +3,8 @@
 type word = Ident of string ;;
 type inlanguage = Singleton of word | Multiple of inlanguage * word;;
 type language = LanguageOver of int * inlanguage | Kleen of string ;;
-type pTerm = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * language  | Newexpr of pTerm * pTerm | In of pTerm * pTerm  ;;
+type set = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * language;;
+type pTerm = Set of set  | Newexpr of set * pTerm | In of set * pTerm  ;;
 module SS = Set.Make(String);;
 
 
@@ -121,17 +122,14 @@ let intersectionLang int1 int2 input =
     SS.elements (SS.inter language1 language2)
 ;;
 
-let rec workOut pTerm input k = match pTerm with
+let rec workOut set input k = match set with
 | Pref (pre,lang) -> prefSet pre (List.nth (stringToLangaugeList input) lang)
 | Union (lang1,lang2) -> unionLang lang1 lang2 input
 | Intersection (lang1,lang2) -> intersectionLang lang1 lang2 input
 | Join (lang,word) -> joinSet word (List.nth (stringToLangaugeList input) lang) k
 ;;
 let rec prettyPrint pTerm input k = match pTerm with
-| Pref (pre,lang) -> print_elements (workOut pTerm input k) k
-| Union (lang1,lang2) -> print_elements (workOut pTerm input k) k
-| Intersection (lang1,lang2) -> print_elements (workOut pTerm input k) k
-| Join (lang,word) ->  print_elements (workOut pTerm input k) k
-| Newexpr (pterm1,pterm2) -> prettyPrint pterm1 input k; print_string "\n"; prettyPrint pterm2 input k
-| In (pterm1,pterm2) -> print_elements (workOut pterm2 (create_input_string (workOut pterm1 input k)) k) k
+| Set (set) -> print_elements (workOut set input k) k
+| Newexpr (pterm1,pterm2) -> print_elements (workOut pterm1 input k) k; print_string "\n"; prettyPrint pterm2 input k
+| In (pterm1,pterm2) -> prettyPrint pterm2 (create_input_string (workOut pterm1 input k)) k
 ;;

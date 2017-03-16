@@ -24,13 +24,18 @@ main :
    expr EOL    { $1 }
 ;
 expr :
+  | set { Set($1) }
+  | set IN expr { In ($1, $3 )}
+  | set NEWEXPR expr { Newexpr($1, $3 ) }
+;
+
+set :
   | PREF word LANG { Pref ($2, $3) }
   | LANG UNION LANG { Union ($1, $3)}
   | LANG INTERSECTION LANG { Intersection ($1, $3)}
-  | expr NEWEXPR expr { Newexpr($1, $3 ) }
   | LANG JOIN language { Join ($1, $3 )}
-  | expr IN expr { In ($1, $3 )}
 ;
+
 word :
   | IDENT { Ident ($1) }
 ;
