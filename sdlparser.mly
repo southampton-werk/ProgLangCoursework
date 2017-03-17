@@ -27,7 +27,7 @@
 %%
 main :
    |expr EOL    { $1 }
-   |COMMENT main { $2 }
+   |COMMENT EOL main { $3 }
 ;
 expr :
   | set { Set($1) }
