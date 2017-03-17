@@ -1,2 +1,6 @@
 # ProgLangCoursework
-List.flatten (joinAllElement ["a";"b"] ["d";"b";"e"]) ;;
+read : as empty
+add comments
+add loops
+say better errors
+make my code look nicer - comments and indent

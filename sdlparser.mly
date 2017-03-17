@@ -7,6 +7,7 @@
 %token UNION
 %token <int> SIZE
 %token <string> KLEENE
+%token COMMENT
 %token SEP
 %token JOIN
 %token LEFTCURLY
@@ -17,11 +18,16 @@
 %token NEWEXPR
 %token INTERSECTION
 %token EOL
+%left COMMENT    /* lowest precedence */
+%left PREF UNION INTERSECTION JOIN  /* lowest precedence */
+%left IN       /* medium precedence */
+%left NEWEXPR
 %start main
 %type <Path.pTerm> main
 %%
 main :
-   expr EOL    { $1 }
+   |expr EOL    { $1 }
+   |COMMENT main { $2 }
 ;
 expr :
   | set { Set($1) }

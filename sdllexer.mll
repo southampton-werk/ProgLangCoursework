@@ -20,6 +20,7 @@ rule main = parse
   | '{' { LEFTCURLY }
   | '}' { RIGHTCURLY }
   | ';' { NEWEXPR }
+  | "//"_*"//" {COMMENT}
   | ['a'-'z']+'*' as lxm { KLEENE(String.sub lxm 0 ((String.length lxm) - 1)) }
   | 'S'['0'-'9']+ as lxm { SIZE(second_of_string lxm) }
   | 'L'['0'-'9']+ as lxm { LANG(second_of_string lxm) }
