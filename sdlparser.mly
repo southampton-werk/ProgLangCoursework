@@ -2,21 +2,13 @@
   open Path
 %}
 
-%token <string> IDENT
-%token <int> LANG
-%token UNION
-%token <int> SIZE
-%token <string> KLEENE
+%token <string> IDENT KLEENE
+%token <int> LANG SIZE
+%token UNION JOIN PREF INTERSECTION
+%token OVER LEFTCURLY RIGHTCURLY
 %token COMMENT
+%token IN NEWEXPR
 %token SEP
-%token JOIN
-%token LEFTCURLY
-%token IN
-%token RIGHTCURLY
-%token PREF
-%token OVER
-%token NEWEXPR
-%token INTERSECTION
 %token EOL
 %left COMMENT    /* lowest precedence */
 %left PREF UNION INTERSECTION JOIN  /* lowest precedence */
