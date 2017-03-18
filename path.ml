@@ -7,6 +7,10 @@ type set = Pref of word * int | Union of int * int | Intersection of int * int |
 type pTerm = Set of set  | Newexpr of pTerm * pTerm | In of pTerm * pTerm  ;;
 module SS = Set.Make(String);;
 
+let rec of_list = function
+  | [] -> SS.empty
+  | hd::tl -> SS.add hd (of_list tl)
+;;
 
 let rec aux_print_elements e count k =
     if (count < k - 1 )
@@ -102,7 +106,7 @@ let rec sizeSet size targetSize originalSet currentSet  =
 
 let languageOver joinList size words  =
   let suffSet = SS.elements (inputLanguage words) in
-    let sizedSet = SS.elements (SS.of_list (sizeSet 1 size suffSet suffSet)) in
+    let sizedSet = SS.elements (of_list (sizeSet 1 size suffSet suffSet)) in
       joinAllElement joinList sizedSet
 ;;
 let joinSet suff wordSet k =
@@ -123,7 +127,7 @@ let stringToWordList input =
   let bracketsFiltered = String.sub input 1 ((String.length input) - 2) in
       let spacesRemoved = Str.global_replace (Str.regexp " ") "" bracketsFiltered in
           let listFiltered = Str.split (Str.regexp ",") spacesRemoved in
-              SS.of_list listFiltered
+              of_list listFiltered
 ;;
 let stringToLangaugeList input =
     let stringList = Str.split (Str.regexp "\n") input in
@@ -139,7 +143,7 @@ let rec workOut set input k = match set with
 let rec inputNowSets pTerm input k = match pTerm with
   | Set (set) -> (workOut set input k) :: []
   | Newexpr (pterm1,pterm2) -> List.append (inputNowSets pterm1 input k) (inputNowSets pterm2 input k)
-  | In (pterm1,pterm2) -> inputNowSets pterm2 (List.map SS.of_list (inputNowSets pterm1 input k)) k
+  | In (pterm1,pterm2) -> inputNowSets pterm2 (List.map of_list (inputNowSets pterm1 input k)) k
 ;;
 
 let rec prettyPrint pTerm input k =
