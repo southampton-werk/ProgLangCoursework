@@ -23,8 +23,8 @@ main :
 ;
 expr :
   | set { Set($1) }
-  | set IN expr { In ($1, $3 )}
-  | set NEWEXPR expr { Newexpr($1, $3 ) }
+  | expr IN expr { In ($1, $3 )}
+  | expr NEWEXPR expr { Newexpr($1, $3 ) }
 ;
 
 set :

@@ -7,7 +7,6 @@ let rec read_stdin acc  =
     |End_of_file -> acc
 ;;
 
-
 let _ =
   try
     let lexbuf = Lexing.from_channel (open_in Sys.argv.(1))

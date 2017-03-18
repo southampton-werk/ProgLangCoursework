@@ -4,7 +4,7 @@ type word = Ident of string ;;
 type inlanguage = Singleton of word | Multiple of inlanguage * word;;
 type language = LanguageOver of int * inlanguage | Kleen of string ;;
 type set = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * language;;
-type pTerm = Set of set  | Newexpr of set * pTerm | In of set * pTerm  ;;
+type pTerm = Set of set  | Newexpr of pTerm * pTerm | In of pTerm * pTerm  ;;
 module SS = Set.Make(String);;
 
 
@@ -20,10 +20,10 @@ let rec aux_print_elements e count k =
     | x::t -> print_string x
 ;;
 
-let print_elements e k =
+let print_elements k e =
   print_string "{";
   aux_print_elements e 0 k;
-  print_string "}"
+  print_string "}\n"
 ;;
 
 let rec aux_create_input_string e = match e with
@@ -137,10 +137,11 @@ let rec workOut set input k = match set with
 ;;
 
 let rec inputNowSets pTerm input k = match pTerm with
-  | Set (set) -> print_elements (workOut set input k) k
-  | Newexpr (pterm1,pterm2) -> print_elements (workOut pterm1 input k) k; print_string "\n"; inputNowSets pterm2 input k
+  | Set (set) -> (workOut set input k) :: []
+  | Newexpr (pterm1,pterm2) -> List.append (inputNowSets pterm1 input k) (inputNowSets pterm2 input k)
+  | In (pterm1,pterm2) -> inputNowSets pterm2 (List.map SS.of_list (inputNowSets pterm1 input k)) k
 ;;
 
 let rec prettyPrint pTerm input k =
-  inputNowSets pTerm (stringToLangaugeList input) k
+  List.iter (print_elements k) (inputNowSets pTerm (stringToLangaugeList input) k)
 ;;
