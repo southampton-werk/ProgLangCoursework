@@ -1,2 +1,2 @@
 //outputs the union of language 0 and 1 and then on the next line 0 and 2//
-Union L0 L1 ; Union L0 L2 In Pref b L1
+Union L0 L1 ; Union L0 L2 In Pref b L1 In Pref e L0

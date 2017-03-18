@@ -3,11 +3,11 @@
 %}
 
 %token <string> IDENT KLEENE
-%token <int> LANG SIZE
+%token <int> LANG SIZE LOOPTIMES
 %token UNION JOIN PREF INTERSECTION
 %token OVER LEFTCURLY RIGHTCURLY
 %token COMMENT
-%token IN NEWEXPR
+%token IN NEWEXPR LOOP
 %token SEP
 %token EOL
 %left COMMENT    /* lowest precedence */
@@ -25,6 +25,7 @@ expr :
   | set { Set($1) }
   | expr IN expr { In ($1, $3 )}
   | expr NEWEXPR expr { Newexpr($1, $3 ) }
+  | LOOP LOOPTIMES expr { Loop ($2, $3) }
 ;
 
 set :

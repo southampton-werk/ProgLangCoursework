@@ -15,10 +15,12 @@ rule main = parse
   | "Join" { JOIN }
   | "Over" { OVER }
   | "In" { IN }
+  | "Loop" { LOOP }
   | ',' { SEP }
   | '{' { LEFTCURLY }
   | '}' { RIGHTCURLY }
   | ';' { NEWEXPR }
+  | ['0'-'9']+ as lxm { LOOPTIMES(int_of_string lxm) }
   | ['a'-'z']+ as lxm { IDENT(lxm) }
   | ['a'-'z']+'*' as lxm { KLEENE(String.sub lxm 0 ((String.length lxm) - 1)) }
   | 'S'['0'-'9']+ as lxm { SIZE(second_of_string lxm) }
