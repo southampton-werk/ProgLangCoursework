@@ -5,7 +5,7 @@
 %token <string> IDENT KLEENE
 %token <int> LANG SIZE LOOPTIMES
 %token UNION JOIN PREF INTERSECTION
-%token OVER LEFTCURLY RIGHTCURLY
+%token OVER LEFTCURLY RIGHTCURLY LEFTCOMMA RIGHTCOMMA
 %token COMMENT
 %token IN NEWEXPR LOOP
 %token SEP
@@ -24,9 +24,9 @@ main :
 ;
 expr :
   | set { Set($1) }
-  | expr IN expr { In ($1, $3 )}
-  | expr NEWEXPR expr { Newexpr($1, $3 ) }
-  | LOOP LOOPTIMES expr { Loop ($2, $3) }
+  | LEFTCOMMA expr RIGHTCOMMA IN LEFTCOMMA expr RIGHTCOMMA { In ($2, $6 )}
+  | LEFTCOMMA expr RIGHTCOMMA NEWEXPR LEFTCOMMA expr RIGHTCOMMA { Newexpr($2, $6 ) }
+  | LEFTCOMMA LOOP LOOPTIMES expr RIGHTCOMMA { Loop ($3, $4) }
 ;
 
 set :

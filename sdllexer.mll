@@ -17,6 +17,8 @@ rule main = parse
   | "In" { IN }
   | "Loop" { LOOP }
   | ',' { SEP }
+  | '(' { LEFTCOMMA }
+  | ')' { RIGHTCOMMA }
   | '{' { LEFTCURLY }
   | '}' { RIGHTCURLY }
   | ';' { NEWEXPR }

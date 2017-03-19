@@ -1,2 +1,2 @@
 //outputs the union of language 0 and 1 and then on the next line 0 and 2//
-Loop 5 Pref a L0 In Pref b L0
+((Loop 5 (Pref a L0) In (Pref b L0))) In (Pref c L0)
