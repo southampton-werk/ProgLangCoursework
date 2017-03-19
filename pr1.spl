@@ -1,2 +1,2 @@
 //adds a before each word in the first language//
-Prefix a L0
+If ({e} Subset L0) Then (Prefix a L0) Else (Prefix b L0)

@@ -6,6 +6,7 @@ type language = LanguageOver of int * inlanguage | Kleen of string ;;
 type set = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * language;;
 type bool = Subset of inlanguage * int;;
 type pTerm = Set of set  | Newexpr of pTerm * pTerm | In of pTerm * pTerm | Loop of int * pTerm | If of bool * pTerm * pTerm  ;;
+
 module SS = Set.Make(String);;
 
 let rec of_list = function
@@ -142,6 +143,11 @@ let rec workOut set input k = match set with
 | Join (lang,word) -> joinSet word (List.nth input lang) k
 ;;
 
+let resolveBooleanExpression booleanExpression input = match booleanExpression with
+ | Subset (subset,lang) -> SS.subset (inputLanguage subset) (List.nth input lang)
+;;
+
+
 let rec resolveLoop counter loopTimes pTerm input k =
   if (counter < loopTimes)
   then resolveLoop (counter + 1) loopTimes pTerm (List.map of_list (inputNowSets pTerm input k)) k
@@ -151,6 +157,7 @@ and inputNowSets pTerm input k = match pTerm with
   | Newexpr (pterm1,pterm2) -> List.append (inputNowSets pterm1 input k) (inputNowSets pterm2 input k)
   | In (pterm1,pterm2) -> inputNowSets pterm2 (List.map of_list (inputNowSets pterm1 input k)) k
   | Loop (loopTimes,pterm) -> resolveLoop 0 loopTimes pterm input k
+  | If (booleanexpression,pterm1,pterm2) -> if (resolveBooleanExpression booleanexpression input) then (inputNowSets pterm1 input k) else (inputNowSets pterm2 input k)
 ;;
 
 let rec prettyPrint pTerm input k =
