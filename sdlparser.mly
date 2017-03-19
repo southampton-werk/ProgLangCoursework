@@ -14,6 +14,7 @@
 %left PREF UNION INTERSECTION JOIN  /* lowest precedence */
 %left IN       /* medium precedence */
 %left NEWEXPR
+%left LOOP
 %start main
 %type <Path.pTerm> main
 %%

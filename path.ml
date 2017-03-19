@@ -126,7 +126,8 @@ let intersectionLang language1 language2 =
 let stringToWordList input =
   let bracketsFiltered = String.sub input 1 ((String.length input) - 2) in
       let spacesRemoved = Str.global_replace (Str.regexp " ") "" bracketsFiltered in
-          let listFiltered = Str.split (Str.regexp ",") spacesRemoved in
+        let findEmptyWord = Str.global_replace (Str.regexp ":") "" spacesRemoved in
+          let listFiltered = Str.split (Str.regexp ",") findEmptyWord in
               of_list listFiltered
 ;;
 let stringToLangaugeList input =
