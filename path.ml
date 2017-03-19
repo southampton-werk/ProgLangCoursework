@@ -140,10 +140,15 @@ let rec workOut set input k = match set with
 | Join (lang,word) -> joinSet word (List.nth input lang) k
 ;;
 
-let rec inputNowSets pTerm input k = match pTerm with
+let rec resolveLoop counter loopTimes pTerm input k =
+  if (counter < loopTimes)
+  then resolveLoop (counter + 1) loopTimes pTerm (List.map of_list (inputNowSets pTerm input k)) k
+  else List.map SS.elements input
+and inputNowSets pTerm input k = match pTerm with
   | Set (set) -> (workOut set input k) :: []
   | Newexpr (pterm1,pterm2) -> List.append (inputNowSets pterm1 input k) (inputNowSets pterm2 input k)
   | In (pterm1,pterm2) -> inputNowSets pterm2 (List.map of_list (inputNowSets pterm1 input k)) k
+  | Loop (loopTimes,pterm) -> resolveLoop 0 loopTimes pterm input k
 ;;
 
 let rec prettyPrint pTerm input k =
