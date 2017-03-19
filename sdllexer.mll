@@ -9,7 +9,7 @@ exception Eof
 rule main = parse
     [' ' '\t' ]  { main lexbuf }
   | ['\n'] { EOL }
-  | "Pref"   { PREF }
+  | "Prefix"   { PREF }
   | "Union"  { UNION }
   | "Intersection" { INTERSECTION }
   | "Join" { JOIN }
