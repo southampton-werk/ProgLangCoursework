@@ -16,6 +16,10 @@ rule main = parse
   | "Over" { OVER }
   | "In" { IN }
   | "Loop" { LOOP }
+  | "Subset" { SUBSET }
+  | "If" { IF }
+  | "Then" { THEN}
+  | "Else" { ELSE }
   | ',' { SEP }
   | '(' { LEFTCOMMA }
   | ')' { RIGHTCOMMA }
