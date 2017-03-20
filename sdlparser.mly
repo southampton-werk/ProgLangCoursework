@@ -12,10 +12,9 @@
 %token SEP
 %token EOL
 %left COMMENT    /* lowest precedence */
-%left PREF UNION INTERSECTION JOIN  /* lowest precedence */
-%left IN       /* medium precedence */
+%left PREF UNION INTERSECTION JOIN
+%left LOOP IF IN
 %left NEWEXPR
-%left LOOP
 %start main
 %type <Path.pTerm> main
 %%
@@ -26,8 +25,8 @@ main :
 expr :
   | set { Set($1) }
   | LEFTCOMMA expr RIGHTCOMMA IN LEFTCOMMA expr RIGHTCOMMA { In ($2, $6 )}
-  | LEFTCOMMA expr RIGHTCOMMA NEWEXPR LEFTCOMMA expr RIGHTCOMMA { Newexpr($2, $6 ) }
-  | LEFTCOMMA LOOP INT expr RIGHTCOMMA { Loop ($3, $4) }
+  | expr NEWEXPR expr { Newexpr($1, $3 ) }
+  | LOOP INT LEFTCOMMA expr RIGHTCOMMA { Loop ($2, $4) }
   | IF LEFTCOMMA bool RIGHTCOMMA THEN LEFTCOMMA expr RIGHTCOMMA ELSE LEFTCOMMA expr RIGHTCOMMA { If ($3,$7,$11) }
 ;
 bool :
