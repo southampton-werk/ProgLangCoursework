@@ -4,7 +4,8 @@ type word = Ident of string ;;
 type inlanguage = Singleton of word | Multiple of inlanguage * word;;
 type language = LanguageOver of int * inlanguage | Kleen of string ;;
 type set = Pref of word * int | Union of int * int | Intersection of int * int | Join of int * language;;
-type bool = Subset of inlanguage * int;;
+
+type bool = Subset of inlanguage * int | CardLessThan of int * int | CardMoreThan of int * int;;
 type pTerm = Set of set  | Newexpr of pTerm * pTerm | In of pTerm * pTerm | Loop of int * pTerm | If of bool * pTerm * pTerm  ;;
 
 module SS = Set.Make(String);;
@@ -145,6 +146,8 @@ let rec workOut set input k = match set with
 
 let resolveBooleanExpression booleanExpression input = match booleanExpression with
  | Subset (subset,lang) -> SS.subset (inputLanguage subset) (List.nth input lang)
+ | CardMoreThan (lang,compare) -> (SS.cardinal (List.nth input lang)) > compare
+ | CardLessThan (lang,compare) -> (SS.cardinal (List.nth input lang)) < compare
 ;;
 
 

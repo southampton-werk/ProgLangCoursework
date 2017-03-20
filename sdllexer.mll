@@ -20,13 +20,16 @@ rule main = parse
   | "If" { IF }
   | "Then" { THEN}
   | "Else" { ELSE }
+  | "Cardinality" { CARDINALITY }
+  | '<' { LESSTHAN }
+  | '>' { MORETHAN }
   | ',' { SEP }
   | '(' { LEFTCOMMA }
   | ')' { RIGHTCOMMA }
   | '{' { LEFTCURLY }
   | '}' { RIGHTCURLY }
   | ';' { NEWEXPR }
-  | ['0'-'9']+ as lxm { LOOPTIMES(int_of_string lxm) }
+  | ['0'-'9']+ as lxm { INT(int_of_string lxm) }
   | ['a'-'z']+|':' as lxm { IDENT(lxm) }
   | ['a'-'z']+'*' as lxm { KLEENE(String.sub lxm 0 ((String.length lxm) - 1)) }
   | 'S'['0'-'9']+ as lxm { SIZE(second_of_string lxm) }
