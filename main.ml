@@ -17,4 +17,4 @@ let _ =
           let k = Str.string_after read (lastLine + 1 )
           and input = Str.string_before read lastLine in
             prettyPrint result input (int_of_string k); print_newline() ; flush stdout
-  with Parsing.Parse_error -> print_string "There was a problem parsing the SDL program. Please check your syntax. \n" ; flush stdout
+  with Parsing.Parse_error -> print_string "There was a problem parsing the SPL program. Please check your syntax. \n" ; flush stdout
