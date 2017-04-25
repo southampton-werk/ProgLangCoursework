@@ -1,0 +1,1 @@
+(Intersection L1 L2 ; Intersection L3 L3) In (Union L1 L2) ; (Intersection L1 L1 ; Union L2 L3) In (Intersection L1 L2) 

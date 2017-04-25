@@ -1,2 +1,4 @@
 # ProgLangCoursework
-say better errors
+empty word
+dictionary ordering
+empty set
