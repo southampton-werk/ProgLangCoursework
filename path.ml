@@ -27,9 +27,20 @@ let rec aux_print_elements e count k =
     | x::t -> print_string x
 ;;
 
+
+let is_e s =
+  if (String.length s > 1)
+  then Str.replace_first (Str.regexp ":") "" s
+  else s
+;;
+
+let empty_worder e =
+  List.map is_e e
+;;
 let print_elements k e =
+  let filtered = empty_worder e in
   print_string "{";
-  aux_print_elements e 0 k;
+  aux_print_elements filtered 0 k;
   print_string "}\n"
 ;;
 
@@ -115,7 +126,7 @@ let languageOver joinList size words  =
 let joinSet suff wordSet k =
   let joinList = SS.elements wordSet in
     match suff with
-    |Kleen (s) ->  joinKleeneWord s (List.nth joinList 0) 0 k
+    |Kleen (s) ->  if ((List.length joinList) != 0) then joinKleeneWord s (List.nth joinList 0) 0 k else []
     |LanguageOver (size,words) -> languageOver joinList size words
 ;;
 
@@ -129,8 +140,7 @@ let intersectionLang language1 language2 =
 let stringToWordList input =
   let bracketsFiltered = String.sub input 1 ((String.length input) - 2) in
       let spacesRemoved = Str.global_replace (Str.regexp " ") "" bracketsFiltered in
-        let findEmptyWord = Str.global_replace (Str.regexp ":") "" spacesRemoved in
-          let listFiltered = Str.split (Str.regexp ",") findEmptyWord in
+          let listFiltered = Str.split (Str.regexp ",") spacesRemoved in
               of_list listFiltered
 ;;
 let stringToLangaugeList input =

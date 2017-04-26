@@ -1,4 +1,4 @@
 # ProgLangCoursework
-empty word
+empty word -- done
 dictionary ordering
-empty set
+empty set - done 
